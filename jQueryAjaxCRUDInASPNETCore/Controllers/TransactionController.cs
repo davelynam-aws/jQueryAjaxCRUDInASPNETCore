@@ -24,12 +24,23 @@ namespace jQueryAjaxCRUDInASPNETCore.Controllers
             return View(await _context.Transactions.ToListAsync());
         }
 
-      
 
-        // GET: Transaction/Create
-        public IActionResult Create()
+
+        // GET: Transaction/AddOrEdit
+        // GET: Transaction/AddOrEdit/5
+        public async Task<IActionResult> AddOrEdit(int id=0)
         {
+            if (id == 0)
             return View();
+            else
+            {
+                var transactionModel = await _context.Transactions.FindAsync(id);
+                if (transactionModel == null)
+                {
+                    return NotFound();
+                }
+                return View(transactionModel);
+            }
         }
 
         // POST: Transaction/Create
